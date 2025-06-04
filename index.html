@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Micro+5&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portofolio</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #000;
+      overflow: hidden;
+      font-family: 'Courier New', monospace;
+    }
+
+    .slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      transition: opacity 0.8s ease;
+    }
+
+    .slide1 {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .awal {
+      position: absolute;
+      top: 6vh;
+      left: 3vw;
+      width: 80vw;
+      max-width: 1000px;
+      height: auto;
+      z-index: 2;
+    }
+
+    .emot {
+      position: absolute;
+      top: 10%;
+      right: 5%;
+      width: 20vw;
+      max-width: 400px;
+      height: auto;
+      z-index: 1;
+    }
+
+    .door {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: 200px;
+      height: 300px;
+      background: white;
+      transform: skewY(-10deg);
+      z-index: 2;
+      transition: all 1s ease-in-out;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .door.open {
+      width: 100vw;
+      height: 100vh;
+      transform: none;
+    }
+
+    .knock-button {
+      transform: skewY(10deg);
+      background: gray;
+      padding: 10px 20px;
+      cursor: pointer;
+      color: white;
+      font-weight: bold;
+      z-index: 3;
+    }
+
+    .slide2 {
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.8s ease;
+    }
+
+    .slide2.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .section {
+      height: 100vh;
+      padding: 60px 20px;
+      box-sizing: border-box;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .section.white {
+      background-color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .corner-img.top-right {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 450px;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.95;
+    }
+
+    .about-section {
+      max-width: 1000px;
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      gap: 40px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .about-image-box {
+      position: relative;
+      width: 300px;
+      height: 300px;
+    }
+
+    .about-box {
+      width: 100%;
+      height: 100%;
+      background-color: #ddd;
+      border-radius: 12px;
+      z-index: 1;
+      position: relative;
+    }
+
+    .about-photo {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 230px;
+      height: 230px;
+      object-fit: cover;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      z-index: 2;
+    }
+
+    .about-text {
+      z-index: 1;
+    }
+
+    .about-title h2 {
+      font-family: 'micro 5';
+      font-size: 100px;
+      font-weight: bold;
+      margin: 0 0 10px 0;
+    }
+
+    .about-description p {
+      font-family: 'Courier New', monospace;
+      font-size: 16px;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    @media (max-width: 768px) {
+      .about-section {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .about-title h2 {
+        font-size: 60px;
+      }
+
+      .corner-img.top-right {
+        width: 200px;
+      }
+    }
+
+    .slide2 {
+      position: relative;
+      z-index: 3;
+      overflow-y: auto;
+      height: 100vh;
+    }
+
+    .section {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .section.white {
+      background-color: #fff;
+    }
+
+    .section.black {
+      background-color: #000;
+    }
+
+    .about-section {
+      max-width: 800px;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .about-content {
+      display: flex;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .about-box {
+      width: 300px;
+      height: 300px;
+      background-color: #ddd;
+    }
+
+    .about-text {
+      max-width: 400px;
+    }
+
+    .about-text h2 {
+      margin-bottom: 10px;
+    }
+
+    .projects-section {
+      background-color: black;
+      padding: 0px 0px;
+      color: white;
+      text-align: center;
+      margin-top: 60px;
+      width: 100%;
+      box-sizing: border-box;
+      overflow-x: hidden;
+    }
+
+    .section-title {
+      font-family: 'Micro 5';
+      font-size: 120px;
+      margin-bottom: 10px;
+      color: white;
+    }
+
+    .project-container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      box-sizing: border-box;
+    }
+
+    .project-card {
+      width: 230px;
+      border: 5px solid #999;
+      background-color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      margin-bottom: 30px;
+      box-sizing: border-box;
+    }
+
+    .preview {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      height: 300px;
+    }
+
+    .carousel-preview {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      animation: slide 15s infinite;
+    }
+
+    .carousel-img {
+      width: 100%;
+      height: 100%;
+      flex-shrink: 0;
+      object-fit: cover;
+      display: block;
+    }
+
+    .project-btn {
+      position: relative;
+      z-index: 1;
+      padding: 10px;
+      background-color: #ddd;
+      border: 1px solid black;
+      cursor: pointer;
+      font-weight: bold;
+      color: black;
+      transition: background-color 0.3s;
+    }
+
+    .project-btn:hover {
+      background-color: black;
+      color: white;
+      transition: 0.3s;
+    }
+
+    @keyframes slide {
+      0% {
+        transform: translateX(0%);
+      }
+
+      33% {
+        transform: translateX(-100%);
+      }
+
+      66% {
+        transform: translateX(-200%);
+      }
+
+      100% {
+        transform: translateX(0%);
+      }
+    }
+
+    .carousel-preview:hover {
+      animation-play-state: paused;
+    }
+
+    @media (max-width: 768px) {
+      .section-title {
+        font-size: 48px;
+      }
+
+      .project-container {
+        justify-content: center;
+        padding: 0 10px;
+      }
+    }
+
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: black;
+      display: flex;
+      justify-content: flex-end;
+      gap: 40px;
+      padding: 20px 0;
+      z-index: 999;
+      padding-right: 50px;
+    }
+
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      font-size: 18px;
+      font-weight: bold;
+      font-family: 'Courier New';
+    }
+
+    .navbar a:hover {
+      text-decoration: underline;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    .contact-title {
+      font-family: 'Micro 5', sans-serif;
+      text-align: center;
+      font-size: 200px;
+      margin-bottom: 20px;
+      color: white;
+    }
+
+    .contact-icons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .contact-icons i {
+      font-size: 36px;
+      color: #fff;
+      background-color: #000;
+      padding: 15px;
+      border-radius: 50%;
+      transition: transform 0.3s;
+    }
+
+    .contact-icons i:hover {
+      transform: scale(1.2);
+    }
+
+    .experience-section {
+      background-color: white;
+      padding: 80px 20px;
+      color: white;
+      text-align: center;
+      margin-top: 0px;
+      width: 100%;
+
+      box-sizing: border-box;
+      overflow-x: hidden;
+    }
+
+    .judul {
+      font-family: 'Micro 5';
+      font-size: 120px;
+      margin-bottom: 10px;
+      color: black;
+    }
+
+    .experience-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .experience-card {
+      background-color: white;
+      border: 4px solid #999;
+      width: calc((100% / 6) - 20px);
+      height: 180px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 10px;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+
+    .experience-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      border-color: #666;
+    }
+
+    .experience-img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 6px;
+      margin-bottom: 8px;
+    }
+
+    .experience-label {
+      font-family: monospace;
+      font-size: 0.85rem;
+      font-weight: bold;
+      color: black;
+      margin: 0;
+    }
+
+    @media (max-width: 1024px) {
+      .experience-card {
+        width: calc((100% / 4) - 20px);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .experience-card {
+        width: calc((100% / 2) - 20px);
+      }
+
+      .section-title {
+        font-size: 48px;
+      }
+    }
+
+    .corner-img.bottom-left {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      max-width: 1513px;
+      z-index: 1;
+      transform: translateY(50%);
+    }
+
+    .jumping-character {
+      position: absolute;
+      bottom: 0;
+      left: 60px;
+      width: 100%;
+      max-width: 70px;
+      z-index: 3;
+      transform: translateY(-50%);
+      animation: jump 1.5s ease-in-out infinite;
+    }
+
+    @keyframes jump {
+
+      0%,
+      100% {
+        transform: translateY(-50);
+      }
+
+      50% {
+        transform: translateY(-200px);
+      }
+    }
+
+    @keyframes jump {
+
+      0%,
+      100% {
+        transform: translateY(-50px) rotate(0deg);
+      }
+
+      25% {
+        transform: translateY(-170px) rotate(-3deg);
+      }
+
+      50% {
+        transform: translateY(-160px) rotate(3deg);
+      }
+
+      75% {
+        transform: translateY(-170px) rotate(-2deg);
+      }
+    }
+
+    @keyframes jump-small {
+
+      0%,
+      100% {
+        transform: translateY(-20px) rotate(0deg);
+      }
+
+      25% {
+        transform: translateY(-90px) rotate(-3deg);
+      }
+
+      50% {
+        transform: translateY(-80px) rotate(3deg);
+      }
+
+      75% {
+        transform: translateY(-90px) rotate(-2deg);
+      }
+    }
+
+    .jumping-character {
+      animation: jump 1s infinite;
+      position: absolute;
+      width: 100px;
+      z-index: 2;
+    }
+
+    @media (max-width: 768px) {
+      .jumping-character {
+        animation: jump-small 1s infinite;
+        width: 60px;
+      }
+    }
+
+    .pipa {
+      position: absolute;
+      bottom: 0;
+      right: 60px;
+      width: 100%;
+      max-width: 70px;
+      z-index: 0;
+      transform: translateY(-8%);
+    }
+
+    @media (max-width: 768px) {
+      .pipa {
+        right: 30px;
+        max-width: 40px;
+        transform: translateY(-9%);
+        z-index: 0;
+      }
+    }
+
+    .transition-section {
+      position: relative;
+      width: 100%;
+      height: 150px;
+      overflow: hidden;
+    }
+
+    .projects-section {
+      position: relative;
+      padding: 4rem 1rem;
+      text-align: center;
+    }
+
+    .floating-img {
+      position: absolute;
+      width: 70px;
+      height: auto;
+      z-index: 1;
+      opacity: 0.9;
+    }
+
+    .shine {
+      top: 35px;
+      left: 40px;
+      width: 150px;
+      animation: floatY 4s ease-in-out infinite;
+    }
+
+    .bulan {
+      top: 45px;
+      right: 45px;
+      width: 100px;
+      animation: floatY 3.5s ease-in-out infinite;
+    }
+
+    @media (max-width: 768px) {
+      .section-title {
+        font-size: 8rem;
+      }
+
+      .floating-img {
+        width: 40px;
+      }
+
+      .shine {
+        top: 35px;
+        left: 25px;
+      }
+
+      .bulan {
+        top: 30px;
+        right: 25px;
+      }
+    }
+
+    @keyframes floatY {
+
+      0%,
+      100% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-30px);
+      }
+    }
+
+    .pager-divider {
+      position: relative;
+      width: 100%;
+      height: auto;
+      display: block;
+      margin: 0;
+    }
+
+    .rumput-divider {
+      width: 100%;
+      height: auto;
+      display: block;
+      margin: 0;
+      position: relative;
+      top: -10px;
+      z-index: 2;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="slide slide1" id="slide1">
+    <img src="judul.png" alt="PORTOFOLIO" class="awal">
+    <img src="aset3.png" alt="Dekorasi Kanan Atas" class="emot">
+
+    <div class="door" id="door">
+      <div class="knock-button" id="knockBtn">Knock!</div>
+    </div>
+  </div>
+
+  <nav class="navbar hidden">
+    <a href="#" id="nav-home">HOME</a>
+    <a href="#about">ABOUT ME</a>
+    <a href="#projects">MY PROJECT</a>
+    <a href="#experience">EXPERIENCE</a>
+    <a href="#awards">CONTACT</a>
+  </nav>
+
+  <div class="slide slide2" id="slide2">
+
+    <section id="about" class="section white">
+      <div class="about-section">
+        <div class="about-content">
+          <div class="about-image-box">
+            <img src="foto.jpg" alt="Foto Saya" class="about-photo">
+            <div class="about-box"></div>
+          </div>
+
+          <div class="about-text">
+            <div class="about-title">
+              <h2>About Me</h2>
+            </div>
+            <div class="about-description">
+              <p>
+                halo! Saya merupakan<br>Mahasiswa S1 prodi<br>Pendidikan multimedia<br>di Universitas
+                Pendidikan<br>Indonesia.<br>
+                Memiliki keahlian dalam fotografi, <br> videografi,bahasa, dan keagamaan.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <img src="aset2.png" class="corner-img bottom-left" alt="dekorasi bawah kiri">
+    <img src="aset7.png" class="jumping-character" alt="karakter loncat">
+    <img src="aset8.png" class="pipa">
+
+    <section class="projects-section" id="projects">
+      <h2 class="section-title">My Projects</h2>
+      <img src="shine.png" alt="Shine" class="floating-img shine">
+      <img src="bulan.png" alt="Bulan" class="floating-img bulan">
+
+      <div class="project-container">
+        <div class="project-card">
+          <div class="preview">
+            <div class="carousel-preview">
+              <img class="carousel-img" src="fotografi3.JPG" alt="Fotografi">
+              <img class="carousel-img" src="fotografi1.JPG" alt="Fotografi 2">
+              <img class="carousel-img" src="fotografi2.jpg" alt="Fotografi 3">
+            </div>
+          </div>
+          <button class="project-btn">Fotografi</button>
+        </div>
+
+        <div class="project-card">
+          <div class="preview">
+            <div class="carousel-preview">
+              <img class="carousel-img" src="videografi4.png">
+              <img class="carousel-img" src="videografi4.jpg">
+              <img class="carousel-img" src="videografi3.png">
+            </div>
+          </div>
+          <button class="project-btn">Videografi</button>
+        </div>
+
+        <div class="project-card">
+          <div class="preview">
+            <div class="carousel-preview">
+              <img class="carousel-img" src="lanyard.png">
+              <img class="carousel-img" src="5.png">
+              <img class="carousel-img" src="6.png">
+            </div>
+          </div>
+          <button class="project-btn">Desain</button>
+        </div>
+
+        <div class="project-card">
+          <div class="preview">
+            <div class="carousel-preview">
+              <img class="carousel-img" src="komputasi1.jpg" alt="Komputasi">
+              <img class="carousel-img" src="komputasi2.jpg" alt="Komputasi 2">
+              <img class="carousel-img" src="komputasi3.jpg" alt="Komputasi 3">
+            </div>
+          </div>
+          <button class="project-btn">Komputasi</button>
+        </div>
+      </div>
+    </section>
+    <img src="pager.png" alt="pager" class="pager-divider">
+    <img src="rumput.png" alt="Rumput" class="rumput-divider">
+    <section class="experience-section" id="experience">
+      <h2 class="judul">My Experience</h2>
+      <div class="experience-container">
+        <div class="experience-card">
+          <img src="himapedia.jpg" alt="Experience 1" class="experience-img">
+          <p class="experience-label">HIMAPEDIA</p>
+        </div>
+        <div class="experience-card">
+          <img src="mokaku.jpg.jpg" alt="Experience 1" class="experience-img">
+          <p class="experience-label">Mokaku UPI Cibiru</p>
+        </div>
+        <div class="experience-card">
+          <img src="mbpm.jpg" alt="Experience 1" class="experience-img">
+          <p class="experience-label">Masa Bimbingan Pendidikan Multimedia</p>
+        </div>
+        <div class="experience-card">
+          <img src="bem.jpg" alt="Experience 1" class="experience-img">
+          <p class="experience-label">BEM UPI Kampus Cibiru</p>
+        </div>
+        <div class="experience-card">
+          <img src="cempor dispora.jpg" alt="Experience 1" class="experience-img">
+          <p class="experience-label">Cempor Dispora Bandung</p>
+        </div>
+        <div class="experience-card">
+          <img src="pcf.jpg" alt="Experience 1" class="experience-img">
+          <p class="experience-label">Dies Natalis</p>
+        </div>
+        <div class="experience-card">
+          <img src="dies.jpg" alt="Experience 1" class="experience-img">
+          <p class="experience-label">Pedia Creative Festival</p>
+        </div>
+        <div class="experience-card">
+          <img src="bjb yes.jpg" alt="Experience 1" class="experience-img">
+          <p class="experience-label">Pelatihan Fotografi BJB</p>
+        </div>
+        <div class="experience-card">
+          <img src="pediatalkness.jpg" alt="Experience 1" class="experience-img">
+          <p class="experience-label">Pediatalkness</p>
+        </div>
+        <div class="experience-card">
+          <img src="tutorial.jpg" alt="Experience 1" class="experience-img">
+          <p class="experience-label">Tutorial PAI UPI Cibiru</p>
+        </div>
+        <div class="experience-card">
+          <img src="yri.jpg" alt="Experience 1" class="experience-img">
+          <p class="experience-label">Youth Ranger Jawa Barat</p>
+        </div>
+        <div class="experience-card">
+          <img src="mapres.jpg" alt="Experience 1" class="experience-img">
+          <p class="experience-label">Sekolah Mapres</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="awards" class="section black">
+      <div class="contact-container">
+        <h2 class="contact-title">Contact Me</h2>
+        <div class="contact-icons">
+          <a href="mailto:mozaikyazfa@gmail.com" target="_blank"><i class="fas fa-envelope"></i></a>
+          <a href="https://www.instagram.com/st.jjun_" target="_blank"><i class="fab fa-instagram"></i></a>
+          <a href="https://x.com/affh_ajh?s=21" target="_blank"><i class="fab fa-twitter"></i></a>
+          <a href="https://www.linkedin.com/in/usernamekamu" target="_blank"><i class="fab fa-linkedin"></i></a>
+          <a href="https://wa.me/62895326330991" target="_blank"><i class="fas fa-sms"></i></a>
+        </div>
+    </section>
+  </div>
+
+  <script>
+    const door = document.getElementById("door");
+    const slide2 = document.getElementById("slide2");
+    const slide1 = document.getElementById("slide1");
+    const knockBtn = document.getElementById("knockBtn");
+    const navBar = document.querySelector(".navbar");
+    const navHome = document.getElementById("nav-home");
+
+    knockBtn.addEventListener("click", () => {
+      door.classList.add("open");
+
+      setTimeout(() => {
+        slide2.classList.add("active");
+        slide1.classList.add("hidden");
+        navBar.classList.remove("hidden");
+      }, 1000);
+    });
+
+    navHome.addEventListener("click", (e) => {
+      e.preventDefault();
+      slide2.classList.remove("active");
+      slide1.classList.remove("hidden");
+      navBar.classList.add("hidden");
+      door.classList.remove("open");
+    });
+    document.querySelectorAll('nav.navbar a[href^="#"]').forEach(link => {
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href').substring(1);
+        const targetElement = document.getElementById(targetId);
+        if (targetElement) {
+          targetElement.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
