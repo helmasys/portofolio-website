@@ -687,6 +687,57 @@
       top: -10px;
       z-index: 2;
     }
+    .modal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0, 0, 0, 0.85);
+  overflow-y: auto;
+}
+
+.modal-content {
+  background-color: #111;
+  color: white;
+  margin: 5% auto;
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 900px;
+  box-shadow: 0 0 15px #000;
+}
+
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.gallery img {
+  width: 200px;
+  border-radius: 8px;
+  border: 2px solid white;
+}
+
+.close-btn {
+  font-size: 30px;
+  font-weight: bold;
+  float: right;
+  cursor: pointer;
+}
+.gallery-link {
+  color: #00ffff;
+  font-size: 14px;
+  text-decoration: underline;
+  display: inline-block;
+  margin-top: 5px;
+}
+.gallery-link:hover {
+  color: #ffffff;
+}
+
   </style>
 </head>
 
@@ -744,51 +795,60 @@
       <img src="shine.png" alt="Shine" class="floating-img shine">
       <img src="bulan.png" alt="Bulan" class="floating-img bulan">
 
-      <div class="project-container">
-        <div class="project-card">
-          <div class="preview">
-            <div class="carousel-preview">
-              <img class="carousel-img" src="fotografi3.JPG" alt="Fotografi">
-              <img class="carousel-img" src="fotografi1.JPG" alt="Fotografi 2">
-              <img class="carousel-img" src="fotografi2.jpg" alt="Fotografi 3">
-            </div>
-          </div>
-          <button class="project-btn">Fotografi</button>
-        </div>
-
-        <div class="project-card">
-          <div class="preview">
-            <div class="carousel-preview">
-              <img class="carousel-img" src="videografi4.png">
-              <img class="carousel-img" src="videografi4.jpg">
-              <img class="carousel-img" src="videografi3.png">
-            </div>
-          </div>
-          <button class="project-btn">Videografi</button>
-        </div>
-
-        <div class="project-card">
-          <div class="preview">
-            <div class="carousel-preview">
-              <img class="carousel-img" src="lanyard.png">
-              <img class="carousel-img" src="5.png">
-              <img class="carousel-img" src="6.png">
-            </div>
-          </div>
-          <button class="project-btn">Desain</button>
-        </div>
-
-        <div class="project-card">
-          <div class="preview">
-            <div class="carousel-preview">
-              <img class="carousel-img" src="komputasi1.jpg" alt="Komputasi">
-              <img class="carousel-img" src="komputasi2.jpg" alt="Komputasi 2">
-              <img class="carousel-img" src="komputasi3.jpg" alt="Komputasi 3">
-            </div>
-          </div>
-          <button class="project-btn">Komputasi</button>
-        </div>
+<div class="project-container">
+  <div class="project-card">
+    <div class="preview">
+      <div class="carousel-preview">
+        <img class="carousel-img" src="fotografi3.JPG" alt="Fotografi">
+        <img class="carousel-img" src="fotografi1.JPG" alt="Fotografi 2">
+        <img class="carousel-img" src="fotografi2.jpg" alt="Fotografi 3">
       </div>
+    </div>
+    <button class="project-btn" data-gallery="fotografi">Fotografi</button>
+  </div>
+
+  <div class="project-card">
+    <div class="preview">
+      <div class="carousel-preview">
+        <img class="carousel-img" src="videografi4.png">
+        <img class="carousel-img" src="videografi4.jpg">
+        <img class="carousel-img" src="videografi3.png">
+      </div>
+    </div>
+    <button class="project-btn" data-gallery="videografi">Videografi</button>
+  </div>
+
+  <div class="project-card">
+    <div class="preview">
+      <div class="carousel-preview">
+        <img class="carousel-img" src="lanyard.png">
+        <img class="carousel-img" src="5.png">
+        <img class="carousel-img" src="6.png">
+      </div>
+    </div>
+    <button class="project-btn" data-gallery="desain">Desain</button>
+  </div>
+
+  <div class="project-card">
+    <div class="preview">
+      <div class="carousel-preview">
+        <img class="carousel-img" src="komputasi1.jpg" alt="Komputasi">
+        <img class="carousel-img" src="komputasi2.jpg" alt="Komputasi 2">
+        <img class="carousel-img" src="komputasi3.jpg" alt="Komputasi 3">
+      </div>
+    </div>
+    <button class="project-btn" data-gallery="komputasi">Komputasi</button>
+  </div>
+</div>
+
+<div id="photoModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal()">&times;</span>
+    <h2 id="modalTitle">Galeri</h2>
+    <div class="gallery" id="modalGallery"></div>
+  </div>
+</div>
+
     </section>
     <img src="pager.png" alt="pager" class="pager-divider">
     <img src="rumput.png" alt="Rumput" class="rumput-divider">
@@ -876,7 +936,95 @@
         navBar.classList.remove("hidden");
       }, 1000);
     });
+const modal = document.getElementById("photoModal");
+  const galleryContainer = document.getElementById("modalGallery");
+  const modalTitle = document.getElementById("modalTitle");
 
+  const galleries = {
+  fotografi: {
+    title: "Galeri Fotografi",
+    images: [
+      "fotografi1.JPG", "fotografi2.jpg", "fotografi3.JPG",
+      "fotografi4.jpg", "fotografi5.jpg", "fotografi6.jpg"
+    ]
+  },
+  videografi: {
+    title: "Galeri Videografi",
+    images: [
+      { src: "videografi1.jpg", link: "https://youtu.be/video1" },
+      { src: "videografi2.png", link: "https://youtu.be/video2" },
+      { src: "videografi3.png", link: "https://youtu.be/video3" },
+      { src: "videografi4.jpg", link: "https://youtu.be/video4" },
+      { src: "videografi5.png", link: "https://youtu.be/video5" }
+    ]
+  },
+  desain: {
+    title: "Galeri Desain",
+    images: [
+      "desain1.png", "desain2.jpg", "desain3.png",
+      "lanyard.png", "5.png", "6.png"
+    ]
+  },
+  komputasi: {
+    title: "Galeri Komputasi",
+    images: [
+      "komputasi1.jpg", "komputasi2.jpg", "komputasi3.jpg",
+      "komputasi4.jpg", "komputasi5.jpg"
+    ]
+  }
+};
+
+  document.querySelectorAll(".project-btn").forEach(button => {
+    button.addEventListener("click", () => {
+      const type = button.dataset.gallery;
+      const gallery = galleries[type];
+
+      if (gallery) {
+        modalTitle.textContent = gallery.title;
+        galleryContainer.innerHTML = "";
+        gallery.images.forEach(item => {
+  const wrapper = document.createElement("div");
+  wrapper.style.textAlign = "center";
+
+  const img = document.createElement("img");
+
+  // Jika item videografi (berupa objek dengan link)
+  if (typeof item === "object" && item.src && item.link) {
+    img.src = item.src;
+    img.alt = type;
+
+    const link = document.createElement("a");
+    link.href = item.link;
+    link.target = "_blank";
+    link.textContent = "Lihat video";
+    link.className = "gallery-link";
+
+    wrapper.appendChild(img);
+    wrapper.appendChild(document.createElement("br"));
+    wrapper.appendChild(link);
+  } else {
+    // selain videografi (item string biasa)
+    img.src = item;
+    img.alt = type;
+    wrapper.appendChild(img);
+  }
+
+  galleryContainer.appendChild(wrapper);
+});
+        modal.style.display = "block";
+      }
+    });
+  });
+
+  function closeModal() {
+    modal.style.display = "none";
+  }
+
+  window.onclick = function(event) {
+    if (event.target === modal) {
+      closeModal();
+    }
+  };
     navHome.addEventListener("click", (e) => {
       e.preventDefault();
       slide2.classList.remove("active");
